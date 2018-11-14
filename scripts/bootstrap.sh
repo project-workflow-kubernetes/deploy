@@ -41,7 +41,7 @@ function up () {
     sleep 5
     export POD_NAME=$(kubectl get pods --namespace storage-temporary -l "release=minio-tmp" \
                               -o jsonpath="{.items[0].metadata.name}")
-    kubectl port-forward $POD_NAME 9000:9000 --namespace storage-temporary 1>/dev/null 2>&1 &
+    kubectl port-forward $POD_NAME 9060:9000 --namespace storage-temporary 1>/dev/null 2>&1 &
     sleep 5
     export POD_NAME=$(kubectl get pods --namespace storage-persistent -l "release=minio" \
                               -o jsonpath="{.items[0].metadata.name}")
