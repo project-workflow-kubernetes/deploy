@@ -5,19 +5,16 @@ set -eo pipefail
 
 function up () {
 
-    helm init
-    helm repo add argo https://argoproj.github.io/argo-helm
-    helm install --name argo \
-                 --namespace argo \
-                 -f configs/argo.yaml \
-                 argo/argo
+    kubectl create namespace workflow
+    kubectl create namespace argo
 
 }
 
 
 function down () {
 
-    helm del --purge argo
+    kubectl delete namespace workflow
+    kubectl delete namespace argo
 
 }
 

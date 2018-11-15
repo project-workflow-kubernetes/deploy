@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workflow-service
+  labels:
+    app: workflow-service
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8002
+  type: ClusterIP
+  selector:
+    app: workflow-service
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: workflow
+  labels:
+    app: workflow-service
+spec:
+  serviceName: "workflow-service"
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: workflow-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: workflow-service
+    spec:
+      containers:
+        - name: workflow-service
+          image: liabifano/workflow:latest
+          env:
+            - name: ARGO_PATH
+              value: /argo-data
+            - name: TEMPORARY_STORAGE_PATH
+              value: /temporary-storage
+            - name: PERSISTENT_STORAGE_PATH
+              value: /persistent-storage
+          ports:
+            - containerPort: 8000
+          command: ["gunicorn", "-k eventlet", "manage:app"]
+          volumeMounts:
+            - name: shared-volume-argo
+              mountPath: /argo-data
+            - name: shared-volume-temporary
+              mountPath: /temporary-storage
+            - name: shared-volume-persistent
+              mountPath: /persistent-storage
+      volumes:
+        - name: shared-volume-argo
+          persistentVolumeClaim:
+            claimName: minio-workflow
+        - name: shared-volume-persistent
+          persistentVolumeClaim:
+            claimName: minio
+        - name: shared-volume-temporary
+          persistentVolumeClaim:
+            claimName: minio-tmp
