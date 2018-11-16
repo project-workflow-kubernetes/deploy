@@ -1,6 +1,9 @@
 # deploy
 
 ## Deploy it
+
+Switch to your desired `kubectl` context first (e.g. `minikube`).
+
 ```bash
 make up
 ```
