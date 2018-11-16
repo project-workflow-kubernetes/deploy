@@ -10,7 +10,14 @@ make up
 4. Install `argo` in `argo` namespace in port 80
 5. Install `workflow-service` in port 8000
 
-# Shutdown
+## Shutdown
 ```bash
 make down
+```
+
+
+## Run job (WIP)
+It will send a POST request to `http://localhost:8000` with information to run the job (old_code_url, new_code_url, new_data_url, old_data_url, job_name, run_id, src)
+```bash
+python producer/src/producer main.py
 ```
