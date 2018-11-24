@@ -33,31 +33,25 @@ spec:
     spec:
       containers:
         - name: workflow-service
-          image: liabifano/workflow:latest
+          image: liabifano/workflow:64c3429
           env:
-            - name: ARGO_PATH
-              value: /argo-data
-            - name: TEMPORARY_STORAGE_PATH
-              value: /temporary-storage
-            - name: PERSISTENT_STORAGE_PATH
-              value: /persistent-storage
+            - name: DATA_PATH
+              value: /data
+            - name: TEMPORARY_ADDR
+              value: minio-tmp.workflow:9000
+            - name: PERSISTENT_ADDR
+              value: minio.workflow:9000
+            - name: MINIO_ACCESS_KEY
+              value: minio
+            - name: MINIO_SECRET_KEY
+              value: minio1234
           ports:
             - containerPort: 8000
           command: ["gunicorn", "-k eventlet", "manage:app"]
           volumeMounts:
-            - name: shared-volume-argo
-              mountPath: /argo-data
-            - name: shared-volume-temporary
-              mountPath: /temporary-storage
-            - name: shared-volume-persistent
-              mountPath: /persistent-storage
+            - name: shared-volume-workflow
+              mountPath: /data
       volumes:
-        - name: shared-volume-argo
+        - name: shared-volume-workflow
           persistentVolumeClaim:
             claimName: minio-workflow
-        - name: shared-volume-persistent
-          persistentVolumeClaim:
-            claimName: minio
-        - name: shared-volume-temporary
-          persistentVolumeClaim:
-            claimName: minio-tmp

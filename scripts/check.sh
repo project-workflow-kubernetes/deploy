@@ -4,7 +4,7 @@ set -eo pipefail
 
 function check_dependencies() {
 
-    DEPENDENCIES="docker helm kubectl"
+    DEPENDENCIES="docker helm kubectl git"
 
     for i in $DEPENDENCIES
     do
@@ -14,11 +14,11 @@ function check_dependencies() {
 
 function check_ports() {
 
-    PORTS="9030 9060 9090 80 8000"
+    PORTS="9030 9060 80 8000"
 
     for p in $PORTS
     do
-        if [ $(lsof -PiTCP -sTCP:LISTEN | grep localhost | awk '{print $9}' | grep $p | wc -l) != 0 ];
+        if [ $(lsof -PiTCP -sTCP:LISTEN | grep localhost | awk '{print $9}' | grep localhost:$p | wc -l) != 0 ];
            then
                echo "error: you must release the port $p"
                exit 1
