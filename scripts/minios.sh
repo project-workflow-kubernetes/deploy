@@ -42,7 +42,7 @@ function up () {
                                # -o jsonpath="{.items[0].metadata.name}")
     # kubectl port-forward $POD_NAME 9090:9000 --namespace workflow 1>/dev/null 2>&1 &
 
-    # sleep 10
+    sleep 10
 
 }
 

@@ -1,3 +1,6 @@
+.PHONY: bootstrap
+
+
 help:
 	@echo "make up"
 	@echo "make down"
@@ -11,7 +14,7 @@ up:
 
 
 bootstrap:
-	cd bootstrap && make install && make run
+	(cd bootstrap && make build && make run)
 
 
 down:
