@@ -10,6 +10,10 @@ up:
 	@bash scripts/workflow.sh up
 
 
+bootstrap:
+	cd bootstrap && make install && make run
+
+
 down:
 	-@bash scripts/minios.sh down
 	-@bash scripts/argo.sh down

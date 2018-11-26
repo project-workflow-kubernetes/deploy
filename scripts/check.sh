@@ -14,7 +14,7 @@ function check_dependencies() {
 
 function check_ports() {
 
-    PORTS="9030 9060 80 8000"
+    PORTS="9030 9060 80 8080"
 
     for p in $PORTS
     do

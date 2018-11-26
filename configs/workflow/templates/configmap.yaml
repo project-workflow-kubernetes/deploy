@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+data:
+  minio_temporary: minio-tmp.workflow:9000
+  minio_persistent: minio.workflow:9000
+  minio_key: minio
+  minio_secret: minio1234
+  minio_volume: minio-workflow

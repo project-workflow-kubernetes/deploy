@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.stateful.name }}
+  labels:
+    app: {{ .Values.service.name }}
+spec:
+  serviceName: {{ .Values.service.name | quote }}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.service.name }}
+    spec:
+      containers:
+        - name: {{ .Values.service.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: DATA_PATH
+              value: {{ .Values.stateful.data_path }}
+            - name: TEMPORARY_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configmap.name }}
+                  key: minio_temporary
+            - name: PERSISTENT_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configmap.name }}
+                  key: minio_persistent
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configmap.name }}
+                  key: minio_key
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configmap.name }}
+                  key: minio_secret
+          ports:
+            - containerPort: {{ .Values.stateful.containerPort }}
+          command: ["gunicorn", "-k eventlet", "manage:app"]
+          volumeMounts:
+            - name: shared-volume-workflow
+              mountPath: {{ .Values.stateful.data_path }}
+      volumes:
+        - name: shared-volume-workflow
+          persistentVolumeClaim:
+            claimName: {{ .Values.stateful.minio_volume }}

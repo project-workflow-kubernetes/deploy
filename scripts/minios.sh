@@ -30,19 +30,19 @@ function up () {
     echo "warning: ports might take some time to be mapped..."
     sleep 25 # improve it
 
-    export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-tmp" \
-                              -o jsonpath="{.items[0].metadata.name}")
-    kubectl port-forward $POD_NAME 9030:9000 --namespace workflow 1>/dev/null 2>&1 &
+    # export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-tmp" \
+                              # -o jsonpath="{.items[0].metadata.name}")
+    # kubectl port-forward $POD_NAME 9030:9000 --namespace workflow 1>/dev/null 2>&1 &
 
     export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio" \
                               -o jsonpath="{.items[0].metadata.name}")
     kubectl port-forward $POD_NAME 9060:9000 --namespace workflow 1>/dev/null 2>&1 &
 
-    export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-workflow" \
-                               -o jsonpath="{.items[0].metadata.name}")
-    kubectl port-forward $POD_NAME 9090:9000 --namespace workflow 1>/dev/null 2>&1 &
+    # export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-workflow" \
+                               # -o jsonpath="{.items[0].metadata.name}")
+    # kubectl port-forward $POD_NAME 9090:9000 --namespace workflow 1>/dev/null 2>&1 &
 
-    sleep 10
+    # sleep 10
 
 }
 
