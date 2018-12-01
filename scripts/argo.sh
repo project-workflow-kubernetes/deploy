@@ -17,7 +17,9 @@ function up () {
 
 function down () {
 
+    helm init
     helm del --purge argo
+    kubectl delete customresourcedefinitions workflows.argoproj.io # so annoying
 
 }
 

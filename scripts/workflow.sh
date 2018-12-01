@@ -20,7 +20,8 @@ function up () {
 
 function down () {
 
-   helm del --purge workflow
+    helm init
+    helm del --purge workflow
 
 }
 

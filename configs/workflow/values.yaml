@@ -10,7 +10,7 @@ configmap:
 
 image:
   repository: liabifano/workflow
-  tag: 64c3429
+  tag: 4d6efc4 
   pullPolicy: IfNotPresent
 
 stateful:
