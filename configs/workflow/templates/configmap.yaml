@@ -7,4 +7,4 @@ data:
   minio_persistent: minio.workflow:9000
   minio_key: minio
   minio_secret: minio1234
-  minio_volume: minio-workflow
+  minio_volume: minio-tmp
