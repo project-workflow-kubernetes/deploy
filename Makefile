@@ -13,7 +13,7 @@ up:
 	@bash scripts/workflow.sh up
 
 down:
-	@bash scripts/minios.sh down
-	@bash scripts/argo.sh down
-	@bash scripts/workflow.sh down
+	-@bash scripts/minios.sh down
+	-@bash scripts/argo.sh down
+	-@bash scripts/workflow.sh down
 	@bash scripts/namespaces.sh down

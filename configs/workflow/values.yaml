@@ -7,26 +7,29 @@ restartPolicy: Never
 
 configmap:
   name: workflow-config
+  minioTemporary: minio-tmp.workflow:9000
+  minioPersistent: minio.workflow:9000
+  minioKey: minio
+  minioSecret: minio1234
+  minioVolume: minio-tmp
 
 image:
   repository: liabifano/workflow
-  tag: 4d6efc4 
+  tag: e331169
   pullPolicy: IfNotPresent
 
-stateful:
-  name: workflow
+deployment:
+  name: workflow-deployment
+  appLabel: workflow
+  containerName: workflow
   containerPort: 8000
-  command:
-    - '"gunicorn"'
-    - '"-k eventlet"'
-    - '"manage:app"'
-  data_path: /data
-  minio_volume: minio-workflow
+  dataPath: /data
+  minioVolume: minio-tmp
+  volumeName: shared-volume-workflow
 
 service:
   name: workflow-service
   type: LoadBalancer
   port: 8000
-  targetPort: 8000
   protocol: TCP
 
