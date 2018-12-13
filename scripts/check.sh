@@ -5,7 +5,7 @@ set -eo pipefail
 
 function check-dependencies() {
 
-    DEPENDENCIES="docker kubectl helm git"
+    DEPENDENCIES="kubectl helm"
 
     for i in $DEPENDENCIES
     do
@@ -44,7 +44,7 @@ function check-cluster() {
 
 function check-ports() {
 
-    PORTS="80 8080"
+    PORTS="80 8000"
 
     for p in $PORTS
     do

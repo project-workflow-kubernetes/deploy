@@ -5,6 +5,7 @@ help:
 	@echo "make is-ready"
 	@echo "make up"
 	@echo "make down"
+	@echo "make expose-minios"
 
 
 is-ready:
