@@ -28,4 +28,4 @@ down:
 
 
 expose-minios:
-	@bash scripts/minio.sh expose
+	@bash scripts/minios.sh expose
