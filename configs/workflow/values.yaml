@@ -15,7 +15,7 @@ configmap:
 
 image:
   repository: liabifano/workflow
-  tag: aaa25f2
+  tag: 35ad43b
   pullPolicy: IfNotPresent
 
 deployment:
