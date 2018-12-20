@@ -18,13 +18,13 @@ up:
 	@bash scripts/namespaces.sh up
 	@bash scripts/minios.sh up
 	@bash scripts/argo.sh up
-	# @bash scripts/workflow.sh up
+	@bash scripts/workflow.sh up
 
 down:
 	-@bash scripts/minios.sh down
 	-@bash scripts/argo.sh down
 	-@bash scripts/workflow.sh down
-	# @bash scripts/namespaces.sh down
+	@bash scripts/namespaces.sh down
 
 
 expose-minios:

@@ -46,7 +46,7 @@ make expose-minios
 ```
 - Expose minio temporary at [http://localhost:9030](http://localhost:9030) and minio persistent at [http://localhost:9060](http://localhost:9060)
 
-> **NOTE**: used just for debugging purposes
+> **NOTE**: use it just for debugging purposes
 
 
 
