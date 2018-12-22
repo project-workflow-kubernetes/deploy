@@ -24,13 +24,19 @@ function check-dependencies() {
 function check-cluster() {
 
     kubectl cluster-info
-
-    helm init
-
+    helm init --upgrade
+    sleep 10
     helm install -n test --namespace test stable/nginx-ingress
 
-    sleep 20
-    curl http://localhost &>/dev/null \
+    if [[ $(kubectl config view | grep current-context | awk '{ print $2 }') = "minikube" ]];
+    then
+        URL=$(minikube service -n test test-nginx-ingress-controller --url | head -n 1)
+    else
+        URL=http://localhost
+    fi;
+
+    sleep 25
+    curl ${URL} &>/dev/null \
             || { echo "Error: Timeout, check cluster connections"; helm del --purge test; exit 1; }
 
     helm del --purge test
