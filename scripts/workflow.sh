@@ -6,6 +6,7 @@ set -eo pipefail
 function up () {
 
     helm install --name workflow --namespace workflow configs/workflow/
+    kubectl -n workflow create clusterrolebinding workflow --clusterrole cluster-admin --serviceaccount workflow:default || true
 
 }
 
@@ -14,6 +15,7 @@ function down () {
 
     helm init
     helm del --purge workflow
+    kubectl delete -n workflow clusterrolebinding workflow || true
 
 }
 
