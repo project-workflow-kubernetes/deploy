@@ -10,6 +10,7 @@ IP=localhost
 function up () {
 
     helm init
+    helm repo update
 
     helm install --name minio-tmp \
                  --namespace  workflow \
