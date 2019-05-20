@@ -1,5 +1,10 @@
 # deploy
 
+## Deploy it
+
+Switch to your desired `kubectl` context first (e.g. `minikube`).
+
+
 ### Dependencies
 Please, install:
 
@@ -18,7 +23,6 @@ make is-ready
 - Check if dependencies are installed
 - Check if the cluster is available by running a small job on it
 - Check if the required ports are free (in this case `80` and `8000`)
-
 
 ```bash
 make up
@@ -47,9 +51,5 @@ make expose-minios
 - Expose minio temporary at [http://localhost:9030](http://localhost:9030) and minio persistent at [http://localhost:9060](http://localhost:9060)
 
 > **NOTE**: use it just for debugging purposes
-
-
-
-
 
 
