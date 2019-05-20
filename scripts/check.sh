@@ -35,7 +35,8 @@ function check-cluster() {
         URL=http://localhost
     fi;
 
-    sleep 25
+    echo "Waiting for the NGINX Ingress"
+    sleep 60
     curl ${URL} &>/dev/null \
             || { echo "Error: Timeout, check cluster connections"; helm del --purge test; exit 1; }
 
