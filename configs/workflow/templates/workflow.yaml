@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.appLabel }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.appLabel }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.appLabel }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.containerName }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        command: ["bash", "run.sh"]
+        ports:
+        - containerPort: {{ .Values.deployment.containerPort }}
+        env:
+          - name: DATA_PATH
+            value: {{ .Values.deployment.dataPath }}
+          - name: TEMPORARY_ADDR
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: minioTemporary
+          - name: PERSISTENT_ADDR
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: minioPersistent
+          - name: MINIO_ACCESS_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: minioKey
+          - name: MINIO_SECRET_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: minioSecret
+        volumeMounts:
+          - name: {{ .Values.deployment.volumeName }}
+            mountPath: {{ .Values.deployment.dataPath }}
+      volumes:
+        - name: {{ .Values.deployment.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.deployment.minioVolume }}

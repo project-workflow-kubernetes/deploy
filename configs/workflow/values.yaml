@@ -1,0 +1,35 @@
+# Default values for nginx.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+
+replicaCount: 1
+restartPolicy: Never
+
+configmap:
+  name: workflow-config
+  minioTemporary: minio-tmp.workflow:9000
+  minioPersistent: minio.workflow:9000
+  minioKey: minio
+  minioSecret: minio1234
+  minioVolume: minio-tmp
+
+image:
+  repository: liabifano/workflow
+  tag: d422f65
+  pullPolicy: IfNotPresent
+
+deployment:
+  name: workflow-deployment
+  appLabel: workflow
+  containerName: workflow
+  containerPort: 8000
+  dataPath: /data
+  minioVolume: minio-tmp
+  volumeName: shared-volume-workflow
+
+service:
+  name: workflow-service
+  type: LoadBalancer
+  port: 8000
+  protocol: TCP
+

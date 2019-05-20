@@ -7,6 +7,7 @@ function up () {
 
     helm init
     helm repo add argo https://argoproj.github.io/argo-helm
+    kubectl delete customresourcedefinitions workflows.argoproj.io || true # so annoying
     helm install --name argo \
                  --namespace argo \
                  -f configs/argo.yaml \
@@ -17,7 +18,9 @@ function up () {
 
 function down () {
 
+    helm init
     helm del --purge argo
+    kubectl delete customresourcedefinitions workflows.argoproj.io # so annoying
 
 }
 

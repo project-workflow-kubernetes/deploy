@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+data:
+  minioTemporary: {{ .Values.configmap.minioTemporary }}
+  minioPersistent: {{ .Values.configmap.minioPersistent }}
+  minioKey: {{ .Values.configmap.minioKey }}
+  minioSecret: {{ .Values.configmap.minioSecret }}
+  minioVolume: {{ .Values.configmap.minioVolume }}

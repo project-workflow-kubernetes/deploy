@@ -10,6 +10,7 @@ IP=localhost
 function up () {
 
     helm init
+    helm repo update
 
     helm install --name minio-tmp \
                  --namespace  workflow \
@@ -21,28 +22,30 @@ function up () {
                  -f configs/minio-persistent.yaml \
                  stable/minio
 
-     helm install --name minio-workflow \
-                 --namespace workflow \
-                 -f configs/minio-workflow.yaml \
-                 stable/minio
+}
 
 
-    echo "warning: ports might take some time to be mapped..."
-    sleep 25 # improve it
+function expose () {
+
+    PORTS="9030 9060"
+
+    for p in $PORTS
+    do
+        if [ $(lsof -PiTCP -sTCP:LISTEN | grep localhost | awk '{print $9}' | grep localhost:$p | wc -l) != 0 ];
+           then
+               echo "error: you must release the port $p"
+               exit 1
+           fi;
+    done;
+
 
     export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-tmp" \
-                              -o jsonpath="{.items[0].metadata.name}")
+                               -o jsonpath="{.items[0].metadata.name}")
     kubectl port-forward $POD_NAME 9030:9000 --namespace workflow 1>/dev/null 2>&1 &
 
     export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio" \
-                              -o jsonpath="{.items[0].metadata.name}")
-    kubectl port-forward $POD_NAME 9060:9000 --namespace workflow 1>/dev/null 2>&1 &
-
-    export POD_NAME=$(kubectl get pods --namespace workflow -l "release=minio-workflow" \
                                -o jsonpath="{.items[0].metadata.name}")
-    kubectl port-forward $POD_NAME 9090:9000 --namespace workflow 1>/dev/null 2>&1 &
-
-    sleep 10
+    kubectl port-forward $POD_NAME 9060:9000 --namespace workflow 1>/dev/null 2>&1 &
 
 }
 
@@ -51,9 +54,9 @@ function down () {
 
     pkill -f port-forward || true # TODO: find a better way to do it
 
+    helm init
     helm del --purge minio-tmp
     helm del --purge minio
-    helm del --purge minio-workflow
 
 }
 
@@ -67,8 +70,12 @@ case "$1" in
       down
     exit 0
     ;;
+  (expose)
+      expose
+    exit 0
+    ;;
   (*)
-    echo "Usage: $0 { up | down }"
+    echo "Usage: $0 { up | expose | down }"
     exit 2
     ;;
 esac

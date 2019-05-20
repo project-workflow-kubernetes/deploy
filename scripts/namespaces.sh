@@ -5,6 +5,9 @@ set -eo pipefail
 
 function up () {
 
+    helm init --upgrade
+    sleep 5
+
     kubectl create namespace workflow
     kubectl create namespace argo
 
