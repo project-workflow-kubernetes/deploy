@@ -10,6 +10,7 @@ function up () {
 
     kubectl create namespace workflow
     kubectl create namespace argo
+    kubectl create namespace redis
 
 }
 
@@ -18,6 +19,7 @@ function down () {
 
     kubectl delete namespace workflow
     kubectl delete namespace argo
+    kubectl delete namespace redis
 
 }
 
